@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "383869058907",
+    "project_id": "myproject-6babb",
+    "storage_bucket": "myproject-6babb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383869058907:android:e83cef3e7c048fe426a47e",
+        "android_client_info": {
+          "package_name": "com.example.chatbot_example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-Gl1ToLv8XxfTxNpGaygYVXbeGsPZvsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383869058907:android:6c69fcca8d8be32726a47e",
+        "android_client_info": {
+          "package_name": "com.example.cloud_function_example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-Gl1ToLv8XxfTxNpGaygYVXbeGsPZvsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383869058907:android:c97257e0abaa7d0a26a47e",
+        "android_client_info": {
+          "package_name": "com.example.cloudfunc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-Gl1ToLv8XxfTxNpGaygYVXbeGsPZvsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
