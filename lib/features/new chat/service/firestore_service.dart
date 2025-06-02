@@ -138,6 +138,44 @@ class FirestoreService {
       });
   }
 
+
+  Future<void> revokeSentRequest(String fromUserId, String toUserId) async {
+    final firestore = FirebaseFirestore.instance;
+    final fromUserRef = firestore.collection('users').doc(fromUserId);
+    final toUserRef = firestore.collection('users').doc(toUserId);
+
+    // await firestore.runTransaction((transaction) async {
+    //   final fromUserSnapshot = await transaction.get(fromUserRef);
+    //   final toUserSnapshot = await transaction.get(toUserRef);
+
+    //   final sent = List<String>.from(fromUserSnapshot['sentRequests'] ?? []);
+    //   final received = List<String>.from(
+    //     toUserSnapshot['receivedRequests'] ?? [],
+    //   );
+
+    //   // Remove the request
+    //   received.remove(fromUserId);
+    //   sent.remove(toUserId);
+    //   print("received $received , sent $sent");
+
+    //   transaction.update(toUserRef, {'receivedRequests': []});
+    //   transaction.update(fromUserRef, {'sentRequests': []});
+
+    //   // firestore.collection('users').doc(fromUserId).
+
+      
+    // });
+
+    await fromUserRef.update({
+        'receivedRequests': FieldValue.arrayRemove([toUserId]),
+      });
+
+      // 2. Remove fromUserId from toUser's receivedRequests
+      await toUserRef.update({
+        'sentRequests': FieldValue.arrayRemove([fromUserId]),
+      });
+  }
+
   // Future<void> rejectFriendRequest(String fromUserId, String toUserId) async {
   //   final firestore = FirebaseFirestore.instance;
   //   final DocumentReference fromUserRef = firestore.collection('users').doc(fromUserId);

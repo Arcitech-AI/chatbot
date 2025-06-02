@@ -4,6 +4,7 @@ import 'package:chatbot_example/features/new%20chat/models/user_model.dart';
 import 'package:chatbot_example/features/new%20chat/screen/chat_home.dart';
 import 'package:chatbot_example/features/new%20chat/screen/chat_screen.dart';
 import 'package:chatbot_example/features/new%20chat/screen/friend_requests_screen.dart';
+import 'package:chatbot_example/features/new%20chat/screen/frient_request_sent_screen.dart';
 import 'package:chatbot_example/features/new%20chat/screen/home_screen.dart';
 import 'package:chatbot_example/features/new%20chat/service/firestore_service.dart';
 import 'package:chatbot_example/features/new%20chat/widget/user_tile.dart';
@@ -32,9 +33,8 @@ class _HomePageState extends State<HomePage> {
     getUserName();
     super.initState();
   }
-  
 
-  Future<void> getUserName() async  {
+  Future<void> getUserName() async {
     DocumentSnapshot docRef = await users.doc(currentUser!.uid).get();
     setState(() {
       currentUserName = docRef.get('name');
@@ -45,7 +45,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Hello, $currentUserName", style: TextStyle(fontWeight: FontWeight.bold),)),
+      appBar: AppBar(
+        title: Text(
+          "Hello, $currentUserName",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -118,21 +123,22 @@ class _HomePageState extends State<HomePage> {
                 child: Text("Friend Requests"),
               ),
             ),
-            // GestureDetector(
-            //   onTap: () {
-            //     Navigator.of(context).push(
-            //       MaterialPageRoute(
-            //         builder:
-            //             (context) =>
-            //                 ChatHomeScreen(currentUid: currentUser!.uid),
-            //       ),
-            //     );
-            //   },
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(18.0),
-            //     child: Text("Chat with friends"),
-            //   ),
-            // ),
+            GestureDetector(
+              // onTap: () {
+              //   Navigator.of(context).push(
+              //     MaterialPageRoute(
+              //       builder:
+              //           (context) => FrientRequestSentScreen(
+              //             currentUid: currentUser!.uid,
+              //           ),
+              //     ),
+              //   );
+              // },
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Text("Requests sent"),
+              ),
+            ),
             GestureDetector(
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
@@ -161,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                   .where((u) => currentUsers.friends.contains(u.uid))
                   .toList();
 
-          if (friendList.isEmpty) {
+          if (friendList.isEmpty) {        
             return Center(
               child: Text("No friends yet. Accept or send requests!"),
             );
@@ -186,15 +192,17 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 child: GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ChatScreen1(
-                          currentUid: currentUser!.uid,
-                          friendUid: friend.uid,
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (_) => ChatScreen1(
+                                currentUid: currentUser!.uid,
+                                friendUid: friend.uid,
+                              ),
                         ),
                       ),
-                    ),
                   child: UserTile(
                     // email: friend.email,
                     actionLabel: 'Chat',
