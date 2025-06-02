@@ -106,21 +106,36 @@ class FirestoreService {
     final fromUserRef = firestore.collection('users').doc(fromUserId);
     final toUserRef = firestore.collection('users').doc(toUserId);
 
-    await firestore.runTransaction((transaction) async {
-      final fromUserSnapshot = await transaction.get(fromUserRef);
-      final toUserSnapshot = await transaction.get(toUserRef);
+    // await firestore.runTransaction((transaction) async {
+    //   final fromUserSnapshot = await transaction.get(fromUserRef);
+    //   final toUserSnapshot = await transaction.get(toUserRef);
 
-      final sent = List<String>.from(fromUserSnapshot['sentRequests'] ?? []);
-      final received = List<String>.from(toUserSnapshot['receivedRequests'] ?? []);
+    //   final sent = List<String>.from(fromUserSnapshot['sentRequests'] ?? []);
+    //   final received = List<String>.from(
+    //     toUserSnapshot['receivedRequests'] ?? [],
+    //   );
 
-      // Remove the request
-      received.remove(fromUserId);
-      sent.remove(toUserId);
-      print("rejected");
+    //   // Remove the request
+    //   received.remove(fromUserId);
+    //   sent.remove(toUserId);
+    //   print("received $received , sent $sent");
 
-      transaction.update(toUserRef, {'receivedRequests': received});
-      transaction.update(fromUserRef, {'sentRequests': sent});     
-    });
+    //   transaction.update(toUserRef, {'receivedRequests': []});
+    //   transaction.update(fromUserRef, {'sentRequests': []});
+
+    //   // firestore.collection('users').doc(fromUserId).
+
+      
+    // });
+
+    await fromUserRef.update({
+        'sentRequests': FieldValue.arrayRemove([toUserId]),
+      });
+
+      // 2. Remove fromUserId from toUser's receivedRequests
+      await toUserRef.update({
+        'receivedRequests': FieldValue.arrayRemove([fromUserId]),
+      });
   }
 
   // Future<void> rejectFriendRequest(String fromUserId, String toUserId) async {
@@ -132,7 +147,7 @@ class FirestoreService {
   //     final DocumentSnapshot fromUserSnapshot = await transaction.get(fromUserRef);
   //     final DocumentSnapshot toUserSnapshot = await transaction.get(toUserRef);
 
-  //     final received = 
+  //     final received =
   //   });
   // }
 
@@ -145,8 +160,6 @@ class FirestoreService {
       'friends': FieldValue.arrayUnion([currentUid]),
       'sentRequests': FieldValue.arrayRemove([currentUid]),
     });
-
-    
   }
 
   String getChatId(String uid1, String uid2) {
